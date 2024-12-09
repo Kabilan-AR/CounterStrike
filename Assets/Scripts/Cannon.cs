@@ -10,8 +10,11 @@ public class Cannon : MonoBehaviour
     [Header("Cannon Settings")]
     [SerializeField] private GameObject enemyTarget;
     [SerializeField] private Transform _cannonBarrel;
-    [SerializeField] private Transform _cannonBarrelBone;
+    //[SerializeField] private Transform _cannonBarrelBone;
     [SerializeField] private GameObject _Bomb;
+   // [SerializeField] private AudioClip _rotateSound;
+    [SerializeField] private AudioClip _fireSound;
+    [SerializeField] private AudioClip _destroyedSound;
 
     [SerializeField]
     [Range(0, 180)]
@@ -20,7 +23,9 @@ public class Cannon : MonoBehaviour
     [Range(1, 100)]
     private int speed=10;
     private float gravity = -9.81f;
+
     private LineRenderer _lineRenderer;
+    private AudioSource _source;
    
     [Header("Display Controls")]
     
@@ -34,16 +39,63 @@ public class Cannon : MonoBehaviour
     private bool isPositioning = false;
     private bool isFiring = false;
 
+    private bool isReloading = false;
+    private bool CannonDestroyed = false;
     private Rigidbody _grenadeRB;
     void Start()
     {
         _grenadeRB = _Bomb.GetComponent<Rigidbody>();
         _lineRenderer = GetComponent<LineRenderer>();
+        _source=GetComponent<AudioSource>();
     }
 
     public void Fire()
     {
+        if(!CannonDestroyed)
+        {
+            isReloading = true;
+            StartCoroutine(FireCannonBall());
+        }
+
+    }
+
+    void Update()
+    {
+        Vector3 directionToTarget = (enemyTarget.transform.position - _cannonBarrel.position).normalized;
+        float angle = Vector3.Angle(_cannonBarrel.forward, directionToTarget);
+
+        if (angle > 5f && !CannonDestroyed)  // You can change 1f to a different value if needed
+        {
+
+            Vector3 velocity = CalculateLaunchVelocity();
+            if (isReloading) { RenderTrajectory(velocity); }
+            
+            StartCoroutine(CannonAlignment()); 
+            
+            
+            
+        }
+       
+    }
+    private IEnumerator FireCannonBall()
+    {
         Vector3 velocity = CalculateLaunchVelocity();
+        isFiring = true;
+        float timer = 0f;
+        animator.SetBool("isFiring", isFiring);
+        
+        while(timer <4.35f)
+        {
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        timer= 0f;
+        isFiring= false;
+        animator.SetBool("isFiring", isFiring);
+        _source.clip = _fireSound;
+        _source.Play();
+        isReloading = false;
+        _lineRenderer.enabled = false;
         var bomb = Instantiate(_Bomb, _cannonBarrel.position, Quaternion.identity)
                                 .GetComponent<Rigidbody>();
         bomb.velocity = velocity;
@@ -51,17 +103,50 @@ public class Cannon : MonoBehaviour
         bomb.GetComponent<Bomb>().velocity = velocity;
         Destroy(bomb.gameObject, 6f);
     }
-
-    void Update()
+    private IEnumerator CannonAlignment()
     {
-
+        float timer = 0f;
+        isPositioning = true;
+        Quaternion initialRotation = transform.rotation;
         Vector3 directionToTarget = (enemyTarget.transform.position - _cannonBarrel.position).normalized;
-        transform.rotation = Quaternion.LookRotation(directionToTarget);
-        //_cannonBarrelBone.rotation = Quaternion.Euler(firingAngle-transform.rotation.x,transform.rotation.y, transform.rotation.z);
-        Vector3 velocity = CalculateLaunchVelocity();
-        RenderTrajectory(velocity);
+        Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
+        animator.SetBool("isPositioning", isPositioning);
+        
+        while (timer < 4.2f)
+        {
+           
+            timer += Time.deltaTime;
+            transform.rotation = Quaternion.Lerp(initialRotation, targetRotation, timer / 4.2f);
+            yield return null;
+        }
+        
+        isPositioning = false;
+        animator.SetBool("isPositioning", isPositioning);
+        timer = 0f;
     }
-
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.layer == LayerMask.NameToLayer("PlayerBomb"))
+        {
+            _source.clip = _destroyedSound;
+            _source.Play();
+            CannonDestroyed = true;
+            isReloading = false;
+            
+            StartCoroutine(DestroyedCannon());
+        }
+    }
+    private IEnumerator  DestroyedCannon()
+    {
+        foreach (Transform t in transform)
+        {
+            if (t.gameObject.GetComponent<Rigidbody>() != null)
+            {
+                t.gameObject.GetComponent<Rigidbody>().useGravity = true;
+            }
+        }
+        yield return null;
+    }
     // Function to calculate the velocity needed to hit the target
     private Vector3 CalculateLaunchVelocity()
     {
@@ -115,6 +200,7 @@ public class Cannon : MonoBehaviour
                 return;
             }
         }
+        
     }
 
     }

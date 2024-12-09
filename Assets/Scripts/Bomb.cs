@@ -21,23 +21,24 @@ public class Bomb : MonoBehaviour
     }
     private void Update()
     {
-      
+      Debug.Log("Velocity of:"+gameObject.name+"is:"+velocity);
     }
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.layer==LayerMask.NameToLayer("Cannon"))
         {
+            Debug.Log("Touched Cannon");
             audioSource.clip = _boomClip;
             audioSource.Play();
         }
-        if(collision.gameObject.layer == LayerMask.NameToLayer("Bomb"))
+        else if(collision.gameObject.layer == LayerMask.NameToLayer("Bomb"))
         {
             audioSource.clip = _boomClip;
-            audioSource.spread.CompareTo(velocity);
+            //audioSource.spread.CompareTo(velocity);
             audioSource.Play();
-            Destroy(gameObject,0.1f);
+            Destroy(gameObject);
         }
-        if(collision.gameObject.layer == LayerMask.NameToLayer("Player"))
+        else if(collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
             audioSource.clip = _PlayerHitClip;
             audioSource.Play();
