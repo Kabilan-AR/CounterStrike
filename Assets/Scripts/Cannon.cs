@@ -10,9 +10,9 @@ public class Cannon : MonoBehaviour
     [Header("Cannon Settings")]
     [SerializeField] private GameObject enemyTarget;
     [SerializeField] private Transform _cannonBarrel;
-    //[SerializeField] private Transform _cannonBarrelBone;
+    
     [SerializeField] private GameObject _Bomb;
-   // [SerializeField] private AudioClip _rotateSound;
+   //[SerializeField] private AudioClip _reloadSound;
     [SerializeField] private AudioClip _fireSound;
     [SerializeField] private AudioClip _destroyedSound;
 
@@ -39,11 +39,25 @@ public class Cannon : MonoBehaviour
     private bool isPositioning = false;
     private bool isFiring = false;
 
-    private bool isReloading = false;
-    private bool CannonDestroyed = false;
+   [HideInInspector] public bool isReloading = false;
+    [HideInInspector] public bool CannonDestroyed = false;
+
+    private float fireTimer;
+    private float fireTiming = 0f;
     private Rigidbody _grenadeRB;
     void Start()
     {
+        GameObject[] allObjects = GameObject.FindObjectsOfType<GameObject>();
+        foreach (GameObject obj in allObjects)
+        {
+            if (obj.layer == LayerMask.NameToLayer("Player"))
+            {
+                enemyTarget = obj;
+                break; 
+            }
+           
+        }
+        fireTimer = Random.Range(5, 8);
         _grenadeRB = _Bomb.GetComponent<Rigidbody>();
         _lineRenderer = GetComponent<LineRenderer>();
         _source=GetComponent<AudioSource>();
@@ -53,6 +67,7 @@ public class Cannon : MonoBehaviour
     {
         if(!CannonDestroyed)
         {
+           
             isReloading = true;
             StartCoroutine(FireCannonBall());
         }
@@ -63,32 +78,37 @@ public class Cannon : MonoBehaviour
     {
         Vector3 directionToTarget = (enemyTarget.transform.position - _cannonBarrel.position).normalized;
         float angle = Vector3.Angle(_cannonBarrel.forward, directionToTarget);
-
-        if (angle > 5f && !CannonDestroyed)  // You can change 1f to a different value if needed
+        Vector3 velocity = CalculateLaunchVelocity();
+        if(fireTiming>fireTimer)
+        {
+            Fire();
+            fireTiming = 0f;
+        }
+        fireTiming += Time.deltaTime;
+        if (angle > 2f && !CannonDestroyed) 
         {
 
-            Vector3 velocity = CalculateLaunchVelocity();
-            if (isReloading) { RenderTrajectory(velocity); }
-            
-            StartCoroutine(CannonAlignment()); 
-            
-            
-            
+              StartCoroutine(CannonAlignment());     
         }
-       
+        if (isReloading) { RenderTrajectory(velocity); }
+
     }
     private IEnumerator FireCannonBall()
     {
         Vector3 velocity = CalculateLaunchVelocity();
         isFiring = true;
         float timer = 0f;
-        animator.SetBool("isFiring", isFiring);
-        
-        while(timer <4.35f)
+        if(!CannonDestroyed)
         {
-            timer += Time.deltaTime;
-            yield return null;
+            animator.SetBool("isFiring", isFiring);
+            while (timer < 4.35f)
+            {
+                
+                timer += Time.deltaTime;
+                yield return null;
+            }
         }
+       
         timer= 0f;
         isFiring= false;
         animator.SetBool("isFiring", isFiring);
@@ -101,52 +121,55 @@ public class Cannon : MonoBehaviour
         bomb.velocity = velocity;
         //Reference of Velocity
         bomb.GetComponent<Bomb>().velocity = velocity;
+        
         Destroy(bomb.gameObject, 6f);
     }
     private IEnumerator CannonAlignment()
     {
         float timer = 0f;
         isPositioning = true;
-        Quaternion initialRotation = transform.rotation;
-        Vector3 directionToTarget = (enemyTarget.transform.position - _cannonBarrel.position).normalized;
-        Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
-        animator.SetBool("isPositioning", isPositioning);
-        
-        while (timer < 4.2f)
+       
+        if(!CannonDestroyed)
         {
-           
-            timer += Time.deltaTime;
-            transform.rotation = Quaternion.Lerp(initialRotation, targetRotation, timer / 4.2f);
-            yield return null;
+            Quaternion initialRotation = transform.rotation;
+
+            Vector3 directionToTarget = (enemyTarget.transform.position - _cannonBarrel.position).normalized;
+
+            Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
+
+            animator.SetBool("isPositioning", isPositioning);
+
+            while (timer < 4.2f)
+            {
+                
+                timer += Time.deltaTime;
+                transform.rotation = Quaternion.Lerp(initialRotation, targetRotation, timer / 4.2f);
+                yield return null;
+            }
         }
+       
         
         isPositioning = false;
         animator.SetBool("isPositioning", isPositioning);
         timer = 0f;
     }
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
+       
         if(collision.gameObject.layer == LayerMask.NameToLayer("PlayerBomb"))
         {
+            Debug.Log("Cannon destroyed");
             _source.clip = _destroyedSound;
             _source.Play();
             CannonDestroyed = true;
             isReloading = false;
-            
-            StartCoroutine(DestroyedCannon());
+            animator.SetBool("isPositioning", false);
+            animator.SetBool("isFiring", false);
+            animator.SetBool("isBroken", true);
+            Destroy(gameObject, 4f);
         }
     }
-    private IEnumerator  DestroyedCannon()
-    {
-        foreach (Transform t in transform)
-        {
-            if (t.gameObject.GetComponent<Rigidbody>() != null)
-            {
-                t.gameObject.GetComponent<Rigidbody>().useGravity = true;
-            }
-        }
-        yield return null;
-    }
+  
     // Function to calculate the velocity needed to hit the target
     private Vector3 CalculateLaunchVelocity()
     {

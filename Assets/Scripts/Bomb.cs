@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
 
 public class Bomb : MonoBehaviour
@@ -10,10 +11,13 @@ public class Bomb : MonoBehaviour
     private AudioSource audioSource;
     [SerializeField] private AudioClip _boomClip;
     [SerializeField] private AudioClip _PlayerHitClip;
+    //private GameObject HitVignette;
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
+        
+       
     }
     private void Start()
     {
@@ -21,17 +25,12 @@ public class Bomb : MonoBehaviour
     }
     private void Update()
     {
-      Debug.Log("Velocity of:"+gameObject.name+"is:"+velocity);
+      //Debug.Log("Velocity of:"+gameObject.name+"is:"+velocity);
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.layer==LayerMask.NameToLayer("Cannon"))
-        {
-            Debug.Log("Touched Cannon");
-            audioSource.clip = _boomClip;
-            audioSource.Play();
-        }
-        else if(collision.gameObject.layer == LayerMask.NameToLayer("Bomb"))
+        
+       if(collision.gameObject.layer == LayerMask.NameToLayer("Bomb"))
         {
             audioSource.clip = _boomClip;
             //audioSource.spread.CompareTo(velocity);
@@ -40,8 +39,15 @@ public class Bomb : MonoBehaviour
         }
         else if(collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
+            //HitVignette.SetActive(true);
+            StartCoroutine(TurnOffHitVignetteAfterDelay(1.2f));
             audioSource.clip = _PlayerHitClip;
             audioSource.Play();
         }
+    }
+    private IEnumerator TurnOffHitVignetteAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay); 
+        //HitVignette.SetActive(false);
     }
 }

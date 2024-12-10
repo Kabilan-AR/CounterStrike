@@ -34,7 +34,7 @@ Transform:
   - {fileID: 3522889655155002499}
   m_Father: {fileID: 3542515386760279123}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98021, y: 0.000008651421, z: 0}
 --- !u!65 &3034038300837319698
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -209,7 +209,7 @@ Transform:
   - {fileID: 2480967836622504030}
   m_Father: {fileID: 3542515386760279123}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98021, y: -7.392968e-13, z: 0}
 --- !u!135 &1950780866511117539
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -254,7 +254,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -293,7 +293,7 @@ Transform:
   - {fileID: 2594952645736947287}
   m_Father: {fileID: 6192611427739851101}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -0.000015258788, y: -179.99998, z: 180}
 --- !u!1 &4041060965583877541
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,7 +358,7 @@ Transform:
   - {fileID: 6810848864626736201}
   m_Father: {fileID: 3542515386760279123}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98021, y: -7.392968e-13, z: 0}
 --- !u!135 &8195850305954085310
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -403,7 +403,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -471,7 +471,7 @@ Transform:
   - {fileID: 2040492061686180785}
   m_Father: {fileID: 3542515386760279123}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98021, y: 2.9203316e-13, z: 0}
 --- !u!135 &763085071437567770
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -516,7 +516,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -533,6 +533,7 @@ GameObject:
   - component: {fileID: 7893227473418016633}
   - component: {fileID: 6706087340605096621}
   - component: {fileID: 5744776899982471829}
+  - component: {fileID: 6921619671446204266}
   m_Layer: 6
   m_Name: Cannon
   m_TagString: Untagged
@@ -704,6 +705,8 @@ MonoBehaviour:
   speed: 10
   LinePoints: 25
   TimeBetweenPoints: 0.1
+  isReloading: 0
+  CannonDestroyed: 0
 --- !u!82 &5744776899982471829
 AudioSource:
   m_ObjectHideFlags: 0
@@ -800,6 +803,27 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!65 &6921619671446204266
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5553533034319080980}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 6.585017, y: 5.865818, z: 8.789337}
+  m_Center: {x: 0.21412668, y: 1.2042595, z: -1.7645514}
 --- !u!1 &7533263030162686872
 GameObject:
   m_ObjectHideFlags: 0
@@ -831,7 +855,7 @@ Transform:
   - {fileID: 3542515386760279123}
   m_Father: {fileID: 6319037858491008870}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98021, y: 0, z: 0}
 --- !u!1 &7773128111407522353
 GameObject:
   m_ObjectHideFlags: 0
@@ -956,7 +980,7 @@ Transform:
   - {fileID: 2888551343587046015}
   m_Father: {fileID: 3542515386760279123}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98021, y: 2.9203316e-13, z: 0}
 --- !u!135 &9202106733081625488
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1001,7 +1025,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
