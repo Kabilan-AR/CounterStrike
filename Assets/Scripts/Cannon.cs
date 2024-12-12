@@ -79,7 +79,7 @@ public class Cannon : MonoBehaviour
         Vector3 directionToTarget = (enemyTarget.transform.position - _cannonBarrel.position).normalized;
         float angle = Vector3.Angle(_cannonBarrel.forward, directionToTarget);
         Vector3 velocity = CalculateLaunchVelocity();
-        if(fireTiming>fireTimer)
+        if(fireTiming>fireTimer && !CannonDestroyed)
         {
             Fire();
             fireTiming = 0f;
@@ -121,8 +121,6 @@ public class Cannon : MonoBehaviour
         bomb.velocity = velocity;
         //Reference of Velocity
         bomb.GetComponent<Bomb>().velocity = velocity;
-        
-        Destroy(bomb.gameObject, 6f);
     }
     private IEnumerator CannonAlignment()
     {
@@ -166,7 +164,7 @@ public class Cannon : MonoBehaviour
             animator.SetBool("isPositioning", false);
             animator.SetBool("isFiring", false);
             animator.SetBool("isBroken", true);
-            Destroy(gameObject, 4f);
+            Destroy(gameObject, 0.7f);
         }
     }
   

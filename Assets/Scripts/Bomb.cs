@@ -11,13 +11,13 @@ public class Bomb : MonoBehaviour
     private AudioSource audioSource;
     [SerializeField] private AudioClip _boomClip;
     [SerializeField] private AudioClip _PlayerHitClip;
-    //private GameObject HitVignette;
+    private float timer = 0f;
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
         
-       
+
     }
     private void Start()
     {
@@ -26,10 +26,19 @@ public class Bomb : MonoBehaviour
     private void Update()
     {
       //Debug.Log("Velocity of:"+gameObject.name+"is:"+velocity);
+      if (timer > 4f) 
+        { 
+            timer = 0f;
+            Destroy(gameObject);
+        }
     }
     private void OnCollisionEnter(Collision collision)
     {
-        
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Map"))
+        {
+ 
+            Destroy(gameObject);
+        }
        if(collision.gameObject.layer == LayerMask.NameToLayer("Bomb"))
         {
             audioSource.clip = _boomClip;
@@ -37,17 +46,16 @@ public class Bomb : MonoBehaviour
             audioSource.Play();
             Destroy(gameObject);
         }
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Cannon"))
+        {
+            Destroy(gameObject,1f);
+        }
         else if(collision.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            //HitVignette.SetActive(true);
-            StartCoroutine(TurnOffHitVignetteAfterDelay(1.2f));
+             
             audioSource.clip = _PlayerHitClip;
             audioSource.Play();
         }
     }
-    private IEnumerator TurnOffHitVignetteAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay); 
-        //HitVignette.SetActive(false);
-    }
+   
 }

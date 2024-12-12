@@ -229,8 +229,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.010094483
-  m_Center: {x: 0, y: -0.0016, z: 1.6891495e-10}
+  m_Radius: 0.008
+  m_Center: {x: 0, y: 0, z: 1.6891495e-10}
 --- !u!54 &1951842130240891158
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -378,8 +378,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.010094483
-  m_Center: {x: 0, y: -0.0016, z: 1.6891495e-10}
+  m_Radius: 0.008
+  m_Center: {x: 0, y: 0, z: 1.6891495e-10}
 --- !u!54 &3432888293137003405
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -491,8 +491,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.010094483
-  m_Center: {x: 0, y: -0.0016, z: 1.6891495e-10}
+  m_Radius: 0.008
+  m_Center: {x: 0, y: 0, z: 1.6891495e-10}
 --- !u!54 &1997608731228608910
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -550,7 +550,7 @@ Transform:
   m_GameObject: {fileID: 5553533034319080980}
   m_LocalRotation: {x: 0, y: 0.9934727, z: 0, w: 0.11407038}
   m_LocalPosition: {x: -1.693, y: 1.07, z: -3.95}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalScale: {x: 0.12, y: 0.12, z: 0.12}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6192611427739851101}
@@ -719,7 +719,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.183
+  m_Volume: 0.344
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -822,8 +822,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 6.585017, y: 5.865818, z: 8.789337}
-  m_Center: {x: 0.21412668, y: 1.2042595, z: -1.7645514}
+  m_Size: {x: 6.7824073, y: 4.658619, z: 11.83804}
+  m_Center: {x: 0.115436316, y: 0.6006587, z: -0.24021268}
 --- !u!1 &7533263030162686872
 GameObject:
   m_ObjectHideFlags: 0
@@ -1000,8 +1000,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.010094483
-  m_Center: {x: 0, y: -0.0016, z: 1.6891495e-10}
+  m_Radius: 0.008
+  m_Center: {x: 0, y: 0, z: 1.6891495e-10}
 --- !u!54 &3254167213869488805
 Rigidbody:
   m_ObjectHideFlags: 0
