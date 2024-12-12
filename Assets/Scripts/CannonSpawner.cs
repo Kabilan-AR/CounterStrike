@@ -19,10 +19,11 @@ public class CannonSpawner : MonoBehaviour
 
     void Update()
     {
-        if (previousRandomNum != -1 && spawnedCannons[previousRandomNum] == null ) 
-        { 
-            SpawnCannon();
-        }
+        //One is destroyed to spawn another
+        //if (previousRandomNum != -1 && spawnedCannons[previousRandomNum] == null ) 
+        //{ 
+        //    SpawnCannon();
+        //}
         
         if (timer > spawnTimer)
         {

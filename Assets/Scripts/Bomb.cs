@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 
 public class Bomb : MonoBehaviour
@@ -25,7 +24,8 @@ public class Bomb : MonoBehaviour
     }
     private void Update()
     {
-      //Debug.Log("Velocity of:"+gameObject.name+"is:"+velocity);
+        //Debug.Log("Velocity of:"+gameObject.name+"is:"+velocity);
+        timer += Time.deltaTime;
       if (timer > 4f) 
         { 
             timer = 0f;
@@ -44,6 +44,7 @@ public class Bomb : MonoBehaviour
             audioSource.clip = _boomClip;
             //audioSource.spread.CompareTo(velocity);
             audioSource.Play();
+            Destroy(collision.gameObject);
             Destroy(gameObject);
         }
         if (collision.gameObject.layer == LayerMask.NameToLayer("Cannon"))

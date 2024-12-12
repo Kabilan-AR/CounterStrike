@@ -21,7 +21,7 @@ public class BoxingGloves : MonoBehaviour
         if(collision.gameObject.layer == LayerMask.NameToLayer("Bomb"))
         {
             
-            collision.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward*400f, ForceMode.Force);
+            collision.gameObject.GetComponent<Rigidbody>().AddForce(transform.forward*600f, ForceMode.Force);
             Debug.Log("Bomb punched");
         }
     }

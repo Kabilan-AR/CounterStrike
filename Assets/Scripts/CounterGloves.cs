@@ -71,7 +71,7 @@ public class CounterGloves : MonoBehaviour
 
     }
 
-    public void CounterAbility()
+    private void CounterAbility()
     {
         if (_portal.TeleportedObjects.Count == 0) return;
         Debug.Log("CounterStrike");

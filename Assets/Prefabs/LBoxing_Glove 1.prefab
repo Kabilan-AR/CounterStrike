@@ -14741,7 +14741,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TeleportedObjects: []
-  _absorbSfx: {fileID: 8300000, guid: e8fafff4e6c03264397c411f2fcc4176, type: 3}
+  _absorbSfx: {fileID: 8300000, guid: 21528fddfba18c64cbf8902b0182aeb6, type: 3}
 --- !u!65 &2202056680571883209
 BoxCollider:
   m_ObjectHideFlags: 0

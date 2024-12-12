@@ -23,6 +23,7 @@ public class HomingCounter : MonoBehaviour
 
     private bool isCountering = false;
     private bool showTrajectory = false;
+    private bool isBusy = false;
 
     private float gravity = -9.81f;
     [Range(10, 100)]
@@ -30,7 +31,7 @@ public class HomingCounter : MonoBehaviour
 
     [Range(0.01f, 0.25f)]
     private float TimeBetweenPoints = 0.1f;
-    [SerializeField] private float maxRayDistance = 300f;
+    [SerializeField] private float maxRayDistance = 20f;
     [SerializeField] private float launchSpeed = 20f;
     private void Awake()
     {
@@ -58,6 +59,7 @@ public class HomingCounter : MonoBehaviour
         CounterPortal.SetActive(false);
         showTrajectory = false;
         CounterAbility();
+        
 
 
     }
@@ -71,17 +73,18 @@ public class HomingCounter : MonoBehaviour
 
     }
 
-    public void CounterAbility()
+    private void CounterAbility()
     {
         if (_portal.TeleportedObjects.Count == 0) return;
         Debug.Log("CounterStrike");
         RaycastHit hit;
         Vector3 castDirection = CounterReleasePosition.forward;
 
-        if (Physics.SphereCast(CounterReleasePosition.position, 5f, castDirection, out hit, maxRayDistance))
+        if (Physics.SphereCast(CounterReleasePosition.position, 2.5f, castDirection, out hit, maxRayDistance) && !isBusy)
         {
-            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Cannon"))
+            if (hit.collider.gameObject.layer == LayerMask.NameToLayer("Cannon") )
             {
+                isBusy = true;
                 GameObject obj = _portal.TeleportedObjects[0];
                 Vector3 targetPosition = hit.point;
 
@@ -92,6 +95,7 @@ public class HomingCounter : MonoBehaviour
 
                 // Stop rendering the trajectory after firing
                 showTrajectory = false;
+                isBusy = false;
             }
         }
     }
@@ -124,7 +128,6 @@ public class HomingCounter : MonoBehaviour
 
             yield return null; // Wait for the next frame
         }
-
         // Enable gravity once the object has reached the target
         objRigidbody.useGravity = true;
 
@@ -145,7 +148,7 @@ public class HomingCounter : MonoBehaviour
 
         // Get the positions
         Vector3 startPosition = CounterReleasePosition.position;
-        Vector3 targetPosition = GetPredictedHitPoint(); // Function that gets the target position (hit.point)
+        Vector3 targetPosition = GetPredictedHitPoint();
 
         // Calculate the control point for the curve
         Vector3 midPoint = (startPosition + targetPosition) / 2f;

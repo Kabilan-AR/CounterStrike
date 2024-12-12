@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements.Experimental;
+
 
 [RequireComponent(typeof(LineRenderer))]
 public class Cannon : MonoBehaviour
@@ -164,7 +164,7 @@ public class Cannon : MonoBehaviour
             animator.SetBool("isPositioning", false);
             animator.SetBool("isFiring", false);
             animator.SetBool("isBroken", true);
-            Destroy(gameObject, 0.7f);
+            Destroy(gameObject, 1.4f);
         }
     }
   
