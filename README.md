@@ -26,7 +26,7 @@ This project was developed within a week, showcasing rapid prototyping, gameplay
 
 ## How to Play
 
-1. Absorb incoming attacks using your gloves.
-2. Redirect the absorbed energy back to enemies by aiming carefully.
+1. Absorb incoming attacks using your gloves(Left Controller)
+2. Redirect the absorbed energy back to enemies by aiming carefully(Right Controller)
 3. Clear each level by countering enemy attacks effectively.
 
